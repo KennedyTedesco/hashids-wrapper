@@ -1,0 +1,36 @@
+{
+  "name": "kennedytedesco/hashids-wrapper",
+  "description": "Just a simple wrapper to Hashids.",
+  "keywords": ["hashids", "wrapper"],
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Kennedy Tedesco",
+      "email": "kennedyt.tw@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "illuminate/container": "5.4.*",
+    "hashids/hashids": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "KennedyTedesco\\HashidsWrapper\\": "src"
+    },
+    "files": ["src/helpers.php"]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests"
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}
