@@ -4,13 +4,13 @@ namespace Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use KennedyTedesco\HashidsWrapper\HashidsWrapper;
+use KennedyTedesco\HashIdsWrapper\HashIdsWrapper;
 
-class HashidsWrapperTest extends TestCase
+class HashIdsWrapperTest extends TestCase
 {
     public function testEncodeAndDecodeIntegers()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
         $this->assertEquals('VJAeG32d', $hashids->encode(99));
         $this->assertEquals(99, $hashids->decode('VJAeG32d'));
@@ -21,7 +21,7 @@ class HashidsWrapperTest extends TestCase
 
     public function testEncodeAndDecodeArrayOfIntegers()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 200]));
         $this->assertEquals([100, 200], $hashids->decode('AeGaS6z2'));
@@ -32,7 +32,7 @@ class HashidsWrapperTest extends TestCase
      */
     public function testDecodeInvalidArray()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 'foo']));
         $this->assertEquals([100, 200], $hashids->decode('AeGaS6z2'));
@@ -43,7 +43,7 @@ class HashidsWrapperTest extends TestCase
      */
     public function testEncodingString()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode('99'));
     }
 
@@ -52,7 +52,7 @@ class HashidsWrapperTest extends TestCase
      */
     public function testEncodingNegativeInteger()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode(-99));
     }
 
@@ -61,13 +61,13 @@ class HashidsWrapperTest extends TestCase
      */
     public function testEncodingFloat()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode(99.2));
     }
 
     public function testDecodeInvalidValue()
     {
-        $hashids = new HashidsWrapper('1My$Foo&Salt*1');
+        $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 200]));
 
         $this->assertEquals(null, $hashids->decode('BeG7S6z9'));

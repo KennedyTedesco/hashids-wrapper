@@ -1,11 +1,11 @@
 <?php
 
-namespace KennedyTedesco\HashidsWrapper;
+namespace KennedyTedesco\HashIdsWrapper;
 
 use Hashids\Hashids;
 use InvalidArgumentException;
 
-final class HashidsWrapper
+final class HashIdsWrapper
 {
     /**
      * @var string
