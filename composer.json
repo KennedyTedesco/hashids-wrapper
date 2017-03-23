@@ -12,7 +12,6 @@
   ],
   "require": {
     "php": ">=7.1",
-    "illuminate/container": "5.4.*",
     "hashids/hashids": "^2.0"
   },
   "require-dev": {
