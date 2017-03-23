@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "hashids/hashids": "^2.0"
+    "hashids/hashids": "^2.0",
+    "illuminate/container": "5.4.*"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0"
@@ -20,7 +21,8 @@
   "autoload": {
     "psr-4": {
       "KennedyTedesco\\HashIdsWrapper\\": "src"
-    }
+    },
+    "files": ["src/helpers.php"]
   },
   "autoload-dev": {
     "psr-4": {
