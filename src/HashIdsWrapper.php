@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KennedyTedesco\HashIdsWrapper;
 
 use Hashids\Hashids;
@@ -7,113 +9,64 @@ use InvalidArgumentException;
 
 final class HashIdsWrapper
 {
-    /**
-     * @var string
-     */
-    protected $salt;
+    public const ALPHABET_LOWER = 1;
+    public const ALPHABET_UPPER = 2;
+    public const ALPHABET_BOTH = 3;
 
-    /**
-     * @var int
-     */
-    protected $minHashLength = 8;
+    private $salt;
+    private $minHashLength = 8;
 
-    /**
-     * @var array
-     */
-    protected $alphabets = [
-        'upper' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-        'lower' => 'abcdefghijklmnopqrstuvwxyz1234567890',
-        'both'  => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+    private $alphabets = [
+        self::ALPHABET_LOWER => 'abcdefghijklmnopqrstuvwxyz1234567890',
+        self::ALPHABET_UPPER => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+        self::ALPHABET_BOTH  => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     ];
 
-    /**
-     * HashidsWrapper constructor.
-     *
-     * @param $salt
-     * @throws InvalidArgumentException
-     */
-    public function __construct($salt)
+    public function __construct(string $salt)
     {
-        if (! is_string($salt)) {
-            throw new InvalidArgumentException('Invalid salt.');
-        }
-
         $this->salt = $salt;
     }
 
-    /**
-     * @param $value
-     * @param string $alphabet
-     * @return string
-     */
-    public function encode($value, $alphabet = 'both')
+    public function encode($value, int $alphabet = self::ALPHABET_BOTH) : string
     {
         $this->assertValue($value);
 
-        $hashids = new Hashids(
-            $this->salt, $this->minHashLength, $this->getAlphabet($alphabet)
-        );
+        $hashids = new Hashids($this->salt, $this->minHashLength, $this->getAlphabet($alphabet));
 
         return $hashids->encode($value);
     }
 
-    /**
-     * @param $value
-     * @param string $alphabet
-     * @return array|int|null
-     */
-    public function decode($value, $alphabet = 'both')
+    public function decode($value, int $alphabet = self::ALPHABET_BOTH) : array
     {
-        if (! is_string($value)) {
-            return null;
+        if (! \is_string($value)) {
+            return [];
         }
 
-        $hashids = new Hashids(
-            $this->salt, mb_strlen($value), $this->getAlphabet($alphabet)
-        );
+        $hashids = new Hashids($this->salt, \mb_strlen($value), $this->getAlphabet($alphabet));
 
-        return $this->normalize(
-            $hashids->decode($value)
-        );
+        return $hashids->decode($value);
     }
 
-    /**
-     * @param $value
-     * @return array|int|mixed
-     */
-    protected function normalize($value)
+    private function assertValue($value) : bool
     {
-        if (is_array($value) && count($value) === 1) {
-            return $value[0] ?? null;
-        } elseif (empty($value)) {
-            return null;
-        }
+        if (\is_array($value)) {
+            foreach ($value as $v) {
+                if (\is_array($v)) {
+                    throw new InvalidArgumentException('Multidimensional arrays are not accepted.');
+                }
 
-        return $value;
-    }
-
-    /**
-     * @param $value
-     * @throws InvalidArgumentException
-     */
-    protected function assertValue($value)
-    {
-        if ((! is_int($value) || $value < 0) && ! is_array($value)) {
+                if (! \is_int($v) || $v < 0) {
+                    throw new InvalidArgumentException('Just positive integers are accepted inside arrays.');
+                }
+            }
+        } elseif (! \is_int($value) || $value < 0) {
             throw new InvalidArgumentException('Just positive integers or arrays are accepted.');
         }
 
-        if (is_array($value)) {
-            foreach ($value as $v) {
-                $this->assertValue($v);
-            }
-        }
+        return true;
     }
 
-    /**
-     * @param $alphabet
-     * @return mixed
-     */
-    protected function getAlphabet($alphabet)
+    private function getAlphabet(int $alphabet) : string
     {
         if (isset($this->alphabets[$alphabet])) {
             return $this->alphabets[$alphabet];

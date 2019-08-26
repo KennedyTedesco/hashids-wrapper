@@ -11,11 +11,13 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
-    "hashids/hashids": "^3.0"
+    "php": "^7.2",
+    "hashids/hashids": "^4.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.0"
+    "friendsofphp/php-cs-fixer": "^2.15",
+    "illuminate/container": "^5.8",
+    "phpunit/phpunit": "^8.0"
   },
   "autoload": {
     "psr-4": {
@@ -26,6 +28,11 @@
     "psr-4": {
       "Tests\\": "tests"
     }
+  },
+  "scripts": {
+    "cs": [
+      "vendor/bin/php-cs-fixer fix --allow-risky yes"
+    ]
   },
   "config": {
     "preferred-install": "dist",

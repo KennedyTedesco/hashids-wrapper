@@ -1,50 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Container\Container;
 use KennedyTedesco\HashIdsWrapper\HashIdsWrapper;
 
-if (! function_exists('encode_id')) {
-    /**
-     * @param $value
-     * @param string $alphabet
-     * @param null $salt
-     * @return string
-     */
-    function encode_id($value, $alphabet = 'both', $salt = null)
+if (! \function_exists('encode_id')) {
+    function encode_id($value, int $alphabet = HashIdsWrapper::ALPHABET_BOTH) : string
     {
-        if (empty($salt)) {
-            $instance = Container::getInstance()->make(
-                HashIdsWrapper::class
-            );
-        } else {
-            $instance = Container::getInstance()->makeWith(
-                HashIdsWrapper::class, [$salt]
-            );
-        }
+        /** @var HashIdsWrapper $instance */
+        $instance = Container::getInstance()->make(HashIdsWrapper::class);
 
         return $instance->encode($value, $alphabet);
     }
 }
 
-if (! function_exists('decode_id')) {
-    /**
-     * @param $value
-     * @param string $alphabet
-     * @param null $salt
-     * @return array|int|null
-     */
-    function decode_id($value, $alphabet = 'both', $salt = null)
+if (! \function_exists('decode_id')) {
+    function decode_id($value, int $alphabet = HashIdsWrapper::ALPHABET_BOTH)
     {
-        if (empty($salt)) {
-            $instance = Container::getInstance()->make(
-                HashIdsWrapper::class
-            );
-        } else {
-            $instance = Container::getInstance()->makeWith(
-                HashIdsWrapper::class, [$salt]
-            );
+        /** @var HashIdsWrapper $instance */
+        $instance = Container::getInstance()->make(HashIdsWrapper::class);
+
+        $decoded = $instance->decode($value, $alphabet);
+
+        if (\is_array($decoded) && \count($decoded) === 1) {
+            return $value[0];
         }
 
-        return $instance->decode($value, $alphabet);
+        return $decoded;
     }
 }

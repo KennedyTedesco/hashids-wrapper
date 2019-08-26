@@ -8,18 +8,18 @@ use KennedyTedesco\HashIdsWrapper\HashIdsWrapper;
 
 class HashIdsWrapperTest extends TestCase
 {
-    public function testEncodeAndDecodeIntegers()
+    public function testEncodeAndDecodeIntegers() : void
     {
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
         $this->assertEquals('VJAeG32d', $hashids->encode(99));
-        $this->assertEquals(99, $hashids->decode('VJAeG32d'));
+        $this->assertEquals(99, $hashids->decode('VJAeG32d')[0]);
 
         $this->assertEquals('VJAeG32d', $hashids->encode([99]));
-        $this->assertEquals(99, $hashids->decode('VJAeG32d'));
+        $this->assertEquals(99, $hashids->decode('VJAeG32d')[0]);
     }
 
-    public function testEncodeAndDecodeArrayOfIntegers()
+    public function testEncodeAndDecodeArrayOfIntegers() : void
     {
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
@@ -27,54 +27,50 @@ class HashIdsWrapperTest extends TestCase
         $this->assertEquals([100, 200], $hashids->decode('AeGaS6z2'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testDecodeInvalidArray()
+    public function testDecodeInvalidArray() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
 
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 'foo']));
         $this->assertEquals([100, 200], $hashids->decode('AeGaS6z2'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testEncodingString()
+    public function testEncodingString() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode('99'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testEncodingNegativeInteger()
+    public function testEncodingNegativeInteger() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode(-99));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testEncodingFloat()
+    public function testEncodingFloat() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('VJAeG32d', $hashids->encode(99.2));
     }
 
-    public function testDecodeInvalidValue()
+    public function testDecodeInvalidValue() : void
     {
         $hashids = new HashIdsWrapper('1My$Foo&Salt*1');
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 200]));
 
-        $this->assertEquals(null, $hashids->decode('BeG7S6z9'));
-        $this->assertEquals(null, $hashids->decode(''));
-        $this->assertEquals(null, $hashids->decode([1, '']));
-        $this->assertEquals(null, $hashids->decode(1010101010));
-        $this->assertEquals(null, $hashids->decode('10101010101'));
-        $this->assertEquals(null, $hashids->decode('BeG7S6z91298ashu128712'));
+        $this->assertEquals([], $hashids->decode('BeG7S6z9'));
+        $this->assertEquals([], $hashids->decode(''));
+        $this->assertEquals([], $hashids->decode([1, '']));
+        $this->assertEquals([], $hashids->decode(1010101010));
+        $this->assertEquals([], $hashids->decode('10101010101'));
+        $this->assertEquals([], $hashids->decode('BeG7S6z91298ashu128712'));
     }
 }
