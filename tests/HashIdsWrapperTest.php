@@ -68,11 +68,11 @@ class HashIdsWrapperTest extends TestCase
         $hashids = new HashIdsWrapper(self::SALT);
         $this->assertEquals('AeGaS6z2', $hashids->encode([100, 200]));
 
-        $this->assertEquals([], $hashids->decode('BeG7S6z9'));
-        $this->assertEquals([], $hashids->decode(''));
-        $this->assertEquals([], $hashids->decode([1, '']));
-        $this->assertEquals([], $hashids->decode(1010101010));
-        $this->assertEquals([], $hashids->decode('10101010101'));
-        $this->assertEquals([], $hashids->decode('BeG7S6z91298ashu128712'));
+        $this->assertEquals(null, $hashids->decode('BeG7S6z9'));
+        $this->assertEquals(null, $hashids->decode(''));
+        $this->assertEquals(null, $hashids->decode([1, '']));
+        $this->assertEquals(null, $hashids->decode(1010101010));
+        $this->assertEquals(null, $hashids->decode('10101010101'));
+        $this->assertEquals(null, $hashids->decode('BeG7S6z91298ashu128712'));
     }
 }

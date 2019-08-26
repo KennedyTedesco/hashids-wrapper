@@ -36,15 +36,17 @@ final class HashIdsWrapper
         return $hashids->encode($value);
     }
 
-    public function decode($value, int $alphabet = self::ALPHABET_BOTH) : array
+    public function decode($value, int $alphabet = self::ALPHABET_BOTH) : ?array
     {
         if (! \is_string($value)) {
-            return [];
+            return null;
         }
 
         $hashids = new Hashids($this->salt, \mb_strlen($value), $this->getAlphabet($alphabet));
 
-        return $hashids->decode($value);
+        $value = $hashids->decode($value);
+
+        return $value === [] ? null : $value;
     }
 
     private function assertValue($value) : bool
