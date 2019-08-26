@@ -1,9 +1,12 @@
+dist: xenial
+
 language: php
 
 php:
-  - 7.1
-
-sudo: false
+  - 7.2
+  - 7.3
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - composer install --no-interaction
+
+script: vendor/bin/phpunit
