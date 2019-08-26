@@ -2,7 +2,6 @@
 
 <p align="left">
 <a href="https://travis-ci.org/KennedyTedesco/hashids-wrapper"><img src="https://travis-ci.org/KennedyTedesco/hashids-wrapper.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/KennedyTedesco/hashids-wrapper"><img src="https://poser.pugx.org/KennedyTedesco/hashids-wrapper/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/KennedyTedesco/hashids-wrapper"><img src="https://poser.pugx.org/KennedyTedesco/hashids-wrapper/license.svg" alt="License"></a>
 </p>
 
