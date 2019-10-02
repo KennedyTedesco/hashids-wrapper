@@ -49,7 +49,7 @@ final class HashIdsWrapper
         return $value === [] ? null : $value;
     }
 
-    private function assertValue($value) : bool
+    private function assertValue($value) : void
     {
         if (\is_array($value)) {
             foreach ($value as $v) {
@@ -64,8 +64,6 @@ final class HashIdsWrapper
         } elseif (! \is_int($value) || $value < 0) {
             throw new InvalidArgumentException('Just positive integers or arrays are accepted.');
         }
-
-        return true;
     }
 
     private function getAlphabet(int $alphabet) : string
